@@ -5,7 +5,10 @@
  */
 package lendle.courses.wp.midterm_wp;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.StringStack;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -14,7 +17,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.AccessibleAttribute;
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JList;
 import javax.swing.ProgressMonitor;
 import javax.swing.SwingUtilities;
 
@@ -51,7 +57,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "https://mbtskoudsalg.com/images/png-image-7.png", "http://pngimg.com/uploads/eagle/eagle_PNG1227.png", "https://upload.wikimedia.org/wikipedia/commons/4/4a/Photographer_Barnstar.png", "http://pluspng.com/img-png/bulb-hd-png-light-bulb-png-transparent-image-2048.png", " " }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "https://mbtskoudsalg.com/images/png-image-7.png", "http://pngimg.com/uploads/eagle/eagle_PNG1227.png", "https://upload.wikimedia.org/wikipedia/commons/4/4a/Photographer_Barnstar.png", "http://pluspng.com/img-png/bulb-hd-png-light-bulb-png-transparent-image-2048.png", "" }));
 
         jScrollPane1.setViewportView(jList1);
 
@@ -102,6 +108,7 @@ public class NewJFrame extends javax.swing.JFrame {
             jButton1.setEnabled(false);
             //從 combobox 抓出被選到的項目，存到變數裡
             String selectedItem="";
+            selectedItem=(""+jComboBox1.getSelectedItem());
             /////////////////////////////////////
             URL url = new URL(selectedItem);
             String fileName = url.getFile();
@@ -118,7 +125,13 @@ public class NewJFrame extends javax.swing.JFrame {
                         progress.setVisible(false);
                         jButton1.setEnabled(true);
                         //將下載好的項目加入到 jList 裡面
-                        
+                        DefaultListModel model=new DefaultListModel();
+                        JList list=new JList(new String[]{""});
+                        //list.setModel(model);
+                        //model.addElement(tempFile.getPath());
+                        System.out.println(tempFile.getName());
+                        jList1.add(list);
+                        jList1.updateUI();
                         ////////////////////////////
                         SwingUtilities.invokeLater(new Runnable() {
                             @Override
@@ -126,6 +139,8 @@ public class NewJFrame extends javax.swing.JFrame {
                                 try {
                                     URL fileURL=tempFile.toURI().toURL();
                                     //利用 fileURL 將 image icon 加到 jLabel2
+                                    Icon icon=new ImageIcon(fileURL);
+                                    jLabel2.setIcon(icon);
                                     ////////////////////////////////////////
                                     jList1.updateUI();
                                 } catch (Exception ex) {
